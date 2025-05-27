@@ -3,6 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ 
+    <!-- Font JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
     <title>Cronometro</title>
     <script src="script.js" defer></script>
 </head>
@@ -15,11 +21,14 @@
             width: 100vw;
             height: 100vh;
             align-items: center;
+            font-family: "JetBrains Mono", monospace;
+            font-optical-sizing: auto;
         }    
 
         .organization {
           display: flex;
           gap: 4px;
+          font-weight: 700;
         }
 
         .buttons {
@@ -30,7 +39,7 @@
         .btn {
             padding: 5px 10px;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             cursor: pointer;
             background: #020024;
             transition: 0.3s ease;
@@ -40,13 +49,37 @@
         .btn:hover {
             background: #868686;
         }
+
+        .scroll {
+            margin-top: 30px;
+            height: 200px;
+            overflow-y: auto;
+        }
+
+        table {
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
     </style>
-      
+     
+    <div><h1>CRONOMETRO</h1></div>
+     
     <div class="organization"><p id="time">00</p><p>:</p><p id="minute">00</p><p>:</p><p id="second">00</p></div>
 
     <div class="buttons">
         <button id="start" class="btn">Iniciar</button>
-        <button id="clear" class="btn">Limpar</button>
+        <button id="clear" class="btn">Reiniciar</button>
+        <button id="save" class="btn">Salvar</button>
+    </div>
+
+    <div class="scroll">
+        <table id="indice">
+        </table>
     </div>
 </body>
 </html>
