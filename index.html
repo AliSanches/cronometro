@@ -26,13 +26,27 @@
             display: flex;
             gap: 5px;
         }
+
+        .btn {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            background: #020024;
+            transition: 0.3s ease;
+            color: white;
+        }
+
+        .btn:hover {
+            background: #868686;
+        }
     </style>
       
     <div class="organization"><p id="time">00</p><p>:</p><p id="minute">00</p><p>:</p><p id="second">00</p></div>
 
     <div class="buttons">
-        <button id="start">Iniciar</button>
-        <button id="clear">Limpar</button>
+        <button id="start" class="btn">Iniciar</button>
+        <button id="clear" class="btn">Limpar</button>
     </div>
 </body>
 </html>
