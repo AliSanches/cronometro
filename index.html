@@ -41,6 +41,12 @@
             gap: 5px;
         }
 
+        .buttonsModal {
+            display: flex;
+            justify-content: right;
+            gap: 5px;
+        }
+
         .btn {
             padding: 5px 10px;
             border: none;
@@ -51,7 +57,13 @@
             color: white;
         }
 
-        .btn:hover {
+        @media (hover: hover) {
+            .btn:hover {
+                background: #868686;
+            }
+        }
+        
+        .btn:active {
             background: #868686;
         }
 
@@ -97,6 +109,16 @@
             border: 3px solid #868686;
         }
 
+        input[type=time] {
+            width: 80%;
+            padding: 12px 20px;
+            border-radius: 4px;
+            -webkit-transition: 0.5s;
+            transition: 0.5s;
+            outline: none;
+            border: 3px solid #ccc;
+        }
+
         .displayNone {
             display: none;
             margin-top: 10px;
@@ -105,6 +127,37 @@
         .displayFlex {
             display: flex;
             justify-content: left;
+        }
+
+        .container-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.6);
+        }
+
+        .container-modal.dFlexModal {
+            display: flex;
+        }
+
+        .modal {
+            display: flex;
+            flex-direction: column;
+            justify-content: left;
+            gap: 10px;
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            height: auto;
+            max-width: 400px;
+            width: 20%;
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
         }
     </style>
      
@@ -116,6 +169,20 @@
         <button id="start" class="btn">Iniciar</button>
         <button id="clear" class="btn">Reiniciar</button>
         <button id="save" class="btn">Salvar</button>
+        <button id="plan" class="btn">Agendar</button>
+    </div>
+
+    <div class="container-modal" id="container-modal">
+        <div class="modal">
+            <label for="taskModal">Tarefa</label>
+            <input type="text" id="taskInputModal">
+            <input type="time" id="taskTime">
+
+            <div class="buttonsModal">
+                <button class="btn" id="cancelModal">Cancelar</button>
+                <button class="btn" id="aplicTime">Aplicar</button>
+            </div>
+        </div>
     </div>
 
     <div class="container-task">

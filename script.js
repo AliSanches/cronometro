@@ -2,8 +2,12 @@ const btnStar = document.querySelector('#start');
 const btnClear = document.querySelector('#clear');
 const btnSave = document.querySelector('#save');
 const btnClearTable = document.querySelector("#clearTable");
+const btnModal = document.querySelector("#plan");
+const btnCancelModal = document.querySelector("#cancelModal");
+const btnAplic = document.querySelector("#aplicTime");
 const indiceList = document.querySelector("#indice");
 const container = document.querySelector("#container-clear");
+const containerModal = document.querySelector("#container-modal");
 let eTime = document.querySelector('#time');
 let eMinute = document.querySelector('#minute');
 let eSecond = document.querySelector('#second');
@@ -12,7 +16,8 @@ let time = 0;
 let minute = 0;
 let second = 0;
 let isValid = true;
-let interval, tbody, header, taskValue, resultTHeader, resultTBody;
+let isModal = true;
+let interval, tbody, header, taskValue, taskValueModal, resultTHeader, resultTBody;
 let arrayTasks = [];
 
 function incrementeSeconds() {
@@ -33,6 +38,8 @@ function incrementeSeconds() {
 }
 
 function validationToggle () {
+    clearInterval(interval);
+
     if (isValid) {
         interval = setInterval(incrementeSeconds, 1000);
         btnStar.innerHTML = 'Pausar';
@@ -54,6 +61,7 @@ function clearTimer () {
     eSecond.innerHTML = '00';
     document.querySelector('#taskInput').value = '';
     btnStar.innerHTML = 'Iniciar';
+    isValid = true;
 }
 
 function clearTable () {
@@ -70,11 +78,11 @@ function clearTable () {
 
 function saveTimer () {
     // Header
-    const resultTHeader = indiceList.getElementsByTagName("thead");
+    resultTHeader = indiceList.getElementsByTagName("thead");
     verifyHeader(resultTHeader);
 
     // Content
-    const resultTBody = indiceList.getElementsByTagName("tbody");
+    resultTBody = indiceList.getElementsByTagName("tbody");
     verifyBody(resultTBody);
 
     const newRow = document.createElement("tr");
@@ -125,6 +133,7 @@ function verifyLocalStorage () {
         let localStorageTask = JSON.parse(localStorage.getItem("task"));
 
         resultTHeader = indiceList.getElementsByTagName("thead");
+
         verifyHeader(resultTHeader);
 
         resultTBody = indiceList.getElementsByTagName("tbody");
@@ -164,6 +173,31 @@ function verifyLocalStorage () {
         }
     } catch (error) {}
 }
+
+function modal () {
+    if (isModal) {
+        containerModal.classList.add("dFlexModal");
+        isModal = false;
+    } else {
+        containerModal.classList.remove("dFlexModal");
+        isModal = true;
+    }
+}
+
+function plan () {
+    taskValueModal = document.getElementById('taskTime').value;
+
+    if (taskValueModal === '') {
+        window.alert("O campo tempo não pode ser vazio!");
+    }
+
+    try {
+        console.log(taskValueModal) //12:20 hora/minuto
+        taskValueModal
+    } catch (error) {
+
+    }
+}   
 
 const verifyHeader = (element) => {
     if (element.length === 0) {
@@ -210,4 +244,6 @@ btnStar.addEventListener('click', validationToggle);
 btnClear.addEventListener('click', clearTimer);
 btnSave.addEventListener('click', saveTimer);
 btnClearTable.addEventListener('click', clearTable);
-window.addEventListener("DOMContentLoaded", verifyLocalStorage);
+btnModal.addEventListener('click', modal);
+btnCancelModal.addEventListener('click', modal);
+btnAplic.addEventListener('click', plan);
