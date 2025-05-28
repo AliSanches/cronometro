@@ -49,6 +49,7 @@ function clearTimer () {
     eTime.innerHTML = '00';
     eMinute.innerHTML = '00';
     eSecond.innerHTML = '00';
+    localStorage.clear();
     document.querySelector('#taskInput').value = '';
     btnStar.innerHTML = 'Iniciar';
 }
@@ -203,14 +204,16 @@ function verifyLocalStorage () {
     const newContentSecond = document.createTextNode(`${localStorageSecond}`);
     newTd3.appendChild(newContentSecond);
 
-    indiceList.appendChild(header);
-    newRow.appendChild(newTask);
-    newRow.appendChild(newTd);
-    newRow.appendChild(newTd2);
-    newRow.appendChild(newTd3);
-    tBody.appendChild(newRow);
+    if (localStorageSecond === null) {
+        indiceList.appendChild(header);
+        newRow.appendChild(newTask);
+        newRow.appendChild(newTd);
+        newRow.appendChild(newTd2);
+        newRow.appendChild(newTd3);
+        tBody.appendChild(newRow);
 
-    indiceList.appendChild(tBody);
+        indiceList.appendChild(tBody);
+    }
 }
 
 btnStar.addEventListener('click', validationToggle);
