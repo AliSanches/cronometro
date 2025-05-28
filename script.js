@@ -1,7 +1,9 @@
 const btnStar = document.querySelector('#start');
 const btnClear = document.querySelector('#clear');
 const btnSave = document.querySelector('#save');
-const indiceList = document.querySelector('#indice');
+const btnClearTable = document.querySelector("#clearTable");
+const indiceList = document.querySelector("#indice");
+const container = document.querySelector("#container-clear");
 let eTime = document.querySelector('#time');
 let eMinute = document.querySelector('#minute');
 let eSecond = document.querySelector('#second');
@@ -10,7 +12,8 @@ let time = 0;
 let minute = 0;
 let second = 0;
 let isValid = true;
-let interval, tbody, header, taskValue;
+let interval, tbody, header, taskValue, resultTHeader, resultTBody;
+let arrayTasks = [];
 
 function incrementeSeconds() {
    second += 1
@@ -49,9 +52,20 @@ function clearTimer () {
     eTime.innerHTML = '00';
     eMinute.innerHTML = '00';
     eSecond.innerHTML = '00';
-    localStorage.clear();
     document.querySelector('#taskInput').value = '';
     btnStar.innerHTML = 'Iniciar';
+}
+
+function clearTable () {
+    localStorage.clear();
+    arrayTasks = [];
+    if (resultTHeader.length === 1) {
+        header.remove();
+    }
+    if (resultTBody.length === 1) {
+        tBody.remove();
+    }
+    container.classList.remove("displayFlex");
 }
 
 function saveTimer () {
@@ -121,102 +135,101 @@ function saveTimer () {
     newRow.appendChild(newTd3);
     tBody.appendChild(newRow);
 
-    indiceList.appendChild(tBody);
+    let addTask = {
+        nameTask: taskValue,
+        hours: time,
+        minutes: minute,
+        seconds: second,
+    }
 
-    localStorage.setItem("task", `${taskValue}`);
-    localStorage.setItem("time", `${time}`);
-    localStorage.setItem("minute", `${minute}`);
-    localStorage.setItem("second", `${second}`);
+    arrayTasks.push(addTask);
+
+    indiceList.appendChild(tBody);
+    localStorage.setItem("task", JSON.stringify(arrayTasks));
+
+    container.classList.add("displayFlex");
     clearTimer();
 }
 
 function verifyLocalStorage () {
-    let localStorageTask = localStorage.getItem("task");
-    let localStorageTime = localStorage.getItem("time");
-    let localStorageMinute = localStorage.getItem("minute");
-    let localStorageSecond = localStorage.getItem("second");
+    try {
+        let localStorageTask = JSON.parse(localStorage.getItem("task"));
 
-    if (localStorageTask === null) {
-        localStorageTask = '';
-    }
-    if (localStorageTime === null) {
-        localStorageTime = '00';
-    }
-    if (localStorageMinute === null) {
-        localStorageMinute = '00';
-    }
-    if (localStorageSecond === null) {
-        localStorageSecond = '00';
-    }
+        resultTHeader = indiceList.getElementsByTagName("thead");
+        if (resultTHeader.length === 0) {
+            header = document.createElement("thead");
 
-    const resultTHeader = indiceList.getElementsByTagName("thead");
-    if (resultTHeader.length === 0) {
-        header = document.createElement("thead");
+            const headerTr = document.createElement("tr");
+            header.appendChild(headerTr);
 
-        const headerTr = document.createElement("tr");
-        header.appendChild(headerTr);
+            const columnTask = document.createElement("th");
+            const contentTask = document.createTextNode("Tarefa");
+            columnTask.appendChild(contentTask);
+            
+            const columnTime = document.createElement("th");
+            const contentTime = document.createTextNode("Hora");
+            columnTime.appendChild(contentTime);
 
-        const columnTask = document.createElement("th");
-        const contentTask = document.createTextNode("Tarefa");
-        columnTask.appendChild(contentTask);
-        
-        const columnTime = document.createElement("th");
-        const contentTime = document.createTextNode("Hora");
-        columnTime.appendChild(contentTime);
+            const columnMinute = document.createElement("th");
+            const contentMinute = document.createTextNode("Minutos");
+            columnMinute.appendChild(contentMinute);
 
-        const columnMinute = document.createElement("th");
-        const contentMinute = document.createTextNode("Minutos");
-        columnMinute.appendChild(contentMinute);
+            const columnSecond = document.createElement("th");
+            const contentSecond = document.createTextNode("Segundos");
+            columnSecond.appendChild(contentSecond);
 
-        const columnSecond = document.createElement("th");
-        const contentSecond = document.createTextNode("Segundos");
-        columnSecond.appendChild(contentSecond);
+            header.appendChild(columnTask);
+            header.appendChild(columnTime);
+            header.appendChild(columnMinute);
+            header.appendChild(columnSecond);
+        } else {
+            tHeader = resultTHeader[0]; 
+        }
 
-        header.appendChild(columnTask);
-        header.appendChild(columnTime);
-        header.appendChild(columnMinute);
-        header.appendChild(columnSecond);
-    } else {
-        tHeader = resultTHeader[0]; 
-    }
+        resultTBody = indiceList.getElementsByTagName("tbody");
+        if (resultTBody.length === 0) {
+            tBody = document.createElement("tbody");
+        } else {
+            tBody = resultTBody[0];
+        }
 
-    const resultTBody = indiceList.getElementsByTagName("tbody");
-    if (resultTBody.length === 0) {
-        tBody = document.createElement("tbody");
-    } else {
-        tBody = resultTBody[0];
-    }
-    const newRow = document.createElement("tr");
+        for (let i = 0; i < localStorageTask.length; i++) {
+            const newRow = document.createElement("tr");
 
-    const newTask = document.createElement("td");
-    const newContentTask = document.createTextNode(`${localStorageTask}`);
-    newTask.appendChild(newContentTask);
+            const newTask = document.createElement("td");
+            const newContentTask = document.createTextNode(`${localStorageTask[i].nameTask}`);
+            newTask.appendChild(newContentTask);
 
-    const newTd = document.createElement("td");
-    const newContentTime = document.createTextNode(`${localStorageTime}`);
-    newTd.appendChild(newContentTime);
+            const newTd = document.createElement("td");
+            const newContentTime = document.createTextNode(`${localStorageTask[i].hours}`);
+            newTd.appendChild(newContentTime);
 
-    const newTd2 = document.createElement("td");
-    const newContentMinute = document.createTextNode(`${localStorageMinute}`);
-    newTd2.appendChild(newContentMinute);
+            const newTd2 = document.createElement("td");
+            const newContentMinute = document.createTextNode(`${localStorageTask[i].minutes}`);
+            newTd2.appendChild(newContentMinute);
 
-    const newTd3 = document.createElement("td");
-    const newContentSecond = document.createTextNode(`${localStorageSecond}`);
-    newTd3.appendChild(newContentSecond);
+            const newTd3 = document.createElement("td");
+            const newContentSecond = document.createTextNode(`${localStorageTask[i].seconds}`);
+            newTd3.appendChild(newContentSecond);
 
-    if (localStorageSecond === null) {
-        indiceList.appendChild(header);
-        newRow.appendChild(newTask);
-        newRow.appendChild(newTd);
-        newRow.appendChild(newTd2);
-        newRow.appendChild(newTd3);
-        tBody.appendChild(newRow);
+            indiceList.appendChild(header);
+            newRow.appendChild(newTask);
+            newRow.appendChild(newTd);
+            newRow.appendChild(newTd2);
+            newRow.appendChild(newTd3);
+            tBody.appendChild(newRow);
 
-        indiceList.appendChild(tBody);
-    }
+            indiceList.appendChild(tBody);
+        }
+
+        if (localStorageTask.length) {
+            container.classList.add("displayFlex");
+        }
+    } catch (error) {}
 }
 
 btnStar.addEventListener('click', validationToggle);
 btnClear.addEventListener('click', clearTimer);
 btnSave.addEventListener('click', saveTimer);
+btnClearTable.addEventListener('click', clearTable);
 window.addEventListener("DOMContentLoaded", verifyLocalStorage);
