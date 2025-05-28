@@ -9,7 +9,11 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
 
-    <title>Cronometro</title>
+    <!-- Icon -->
+    <link rel="icon" type="image/x-icon" href="/time.png">
+
+    <title>Cronômetro</title>
+
     <script src="script.js" defer></script>
 </head>
 <body>
@@ -65,9 +69,35 @@
             text-align: left;
             border-bottom: 1px solid #ddd;
         }
+
+        .container-task {
+            margin-top: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .container-task label {
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        input[type=text] {
+            width: 80%;
+            padding: 12px 20px;
+            border-radius: 4px;
+            -webkit-transition: 0.5s;
+            transition: 0.5s;
+            outline: none;
+            border: 3px solid #ccc;
+        }
+
+        input[type=text]:focus {
+            border: 3px solid #868686;
+        }
     </style>
      
-    <div><h1>CRONOMETRO</h1></div>
+    <div><h1>CRONÔMETRO</h1></div>
      
     <div class="organization"><p id="time">00</p><p>:</p><p id="minute">00</p><p>:</p><p id="second">00</p></div>
 
@@ -75,6 +105,11 @@
         <button id="start" class="btn">Iniciar</button>
         <button id="clear" class="btn">Reiniciar</button>
         <button id="save" class="btn">Salvar</button>
+    </div>
+
+    <div class="container-task">
+        <label for="task">Tarefa</label>
+        <input type="text" id="taskInput">
     </div>
 
     <div class="scroll">
