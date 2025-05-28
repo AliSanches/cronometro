@@ -138,15 +138,15 @@ function verifyLocalStorage () {
             newTask.appendChild(newContentTask);
 
             const newTd = document.createElement("td");
-            const newContentTime = document.createTextNode(`${localStorageTask[i].hours}`);
+            const newContentTime = document.createTextNode(`${localStorageTask[i].hours.toString().padStart(2, "0")}`);
             newTd.appendChild(newContentTime);
 
             const newTd2 = document.createElement("td");
-            const newContentMinute = document.createTextNode(`${localStorageTask[i].minutes}`);
+            const newContentMinute = document.createTextNode(`${localStorageTask[i].minutes.toString().padStart(2, "0")}`);
             newTd2.appendChild(newContentMinute);
 
             const newTd3 = document.createElement("td");
-            const newContentSecond = document.createTextNode(`${localStorageTask[i].seconds}`);
+            const newContentSecond = document.createTextNode(`${localStorageTask[i].seconds.toString().padStart(2, "0")}`);
             newTd3.appendChild(newContentSecond);
 
             indiceList.appendChild(header);
