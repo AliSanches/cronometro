@@ -71,43 +71,12 @@ function clearTable () {
 function saveTimer () {
     // Header
     const resultTHeader = indiceList.getElementsByTagName("thead");
-    if (resultTHeader.length === 0) {
-        header = document.createElement("thead");
-
-        const headerTr = document.createElement("tr");
-        header.appendChild(headerTr);
-
-        const columnTask = document.createElement("th");
-        const contentTask = document.createTextNode("Tarefa");
-        columnTask.appendChild(contentTask);
-        
-        const columnTime = document.createElement("th");
-        const contentTime = document.createTextNode("Hora");
-        columnTime.appendChild(contentTime);
-
-        const columnMinute = document.createElement("th");
-        const contentMinute = document.createTextNode("Minutos");
-        columnMinute.appendChild(contentMinute);
-
-        const columnSecond = document.createElement("th");
-        const contentSecond = document.createTextNode("Segundos");
-        columnSecond.appendChild(contentSecond);
-
-        header.appendChild(columnTask);
-        header.appendChild(columnTime);
-        header.appendChild(columnMinute);
-        header.appendChild(columnSecond);
-    } else {
-        tHeader = resultTHeader[0]; 
-    }
+    verifyHeader(resultTHeader);
 
     // Content
     const resultTBody = indiceList.getElementsByTagName("tbody");
-    if (resultTBody.length === 0) {
-        tBody = document.createElement("tbody");
-    } else {
-        tBody = resultTBody[0];
-    }
+    verifyBody(resultTBody);
+
     const newRow = document.createElement("tr");
 
     taskValue = document.getElementById('taskInput').value;
@@ -156,42 +125,10 @@ function verifyLocalStorage () {
         let localStorageTask = JSON.parse(localStorage.getItem("task"));
 
         resultTHeader = indiceList.getElementsByTagName("thead");
-        if (resultTHeader.length === 0) {
-            header = document.createElement("thead");
-
-            const headerTr = document.createElement("tr");
-            header.appendChild(headerTr);
-
-            const columnTask = document.createElement("th");
-            const contentTask = document.createTextNode("Tarefa");
-            columnTask.appendChild(contentTask);
-            
-            const columnTime = document.createElement("th");
-            const contentTime = document.createTextNode("Hora");
-            columnTime.appendChild(contentTime);
-
-            const columnMinute = document.createElement("th");
-            const contentMinute = document.createTextNode("Minutos");
-            columnMinute.appendChild(contentMinute);
-
-            const columnSecond = document.createElement("th");
-            const contentSecond = document.createTextNode("Segundos");
-            columnSecond.appendChild(contentSecond);
-
-            header.appendChild(columnTask);
-            header.appendChild(columnTime);
-            header.appendChild(columnMinute);
-            header.appendChild(columnSecond);
-        } else {
-            tHeader = resultTHeader[0]; 
-        }
+        verifyHeader(resultTHeader);
 
         resultTBody = indiceList.getElementsByTagName("tbody");
-        if (resultTBody.length === 0) {
-            tBody = document.createElement("tbody");
-        } else {
-            tBody = resultTBody[0];
-        }
+        verifyBody(resultTBody);
 
         for (let i = 0; i < localStorageTask.length; i++) {
             const newRow = document.createElement("tr");
@@ -226,6 +163,47 @@ function verifyLocalStorage () {
             container.classList.add("displayFlex");
         }
     } catch (error) {}
+}
+
+const verifyHeader = (element) => {
+    if (element.length === 0) {
+        header = document.createElement("thead");
+
+        const headerTr = document.createElement("tr");
+        header.appendChild(headerTr);
+
+        const columnTask = document.createElement("th");
+        const contentTask = document.createTextNode("Tarefa");
+        columnTask.appendChild(contentTask);
+        
+        const columnTime = document.createElement("th");
+        const contentTime = document.createTextNode("Hora");
+        columnTime.appendChild(contentTime);
+
+        const columnMinute = document.createElement("th");
+        const contentMinute = document.createTextNode("Minutos");
+        columnMinute.appendChild(contentMinute);
+
+        const columnSecond = document.createElement("th");
+        const contentSecond = document.createTextNode("Segundos");
+        columnSecond.appendChild(contentSecond);
+
+        header.appendChild(columnTask);
+        header.appendChild(columnTime);
+        header.appendChild(columnMinute);
+        header.appendChild(columnSecond);
+    } else {
+        return tHeader = resultTHeader[0]; 
+    }
+
+}
+
+const verifyBody = (element) => {
+    if (element.length === 0) {
+        tBody = document.createElement("tbody");
+    } else {
+        return tBody = resultTBody[0];
+    }
 }
 
 btnStar.addEventListener('click', validationToggle);
