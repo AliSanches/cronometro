@@ -15,48 +15,48 @@ let eSecond = document.querySelector('#second');
 let time = 0;
 let minute = 0;
 let second = 0;
+let elapsed = 0;
 let isValid = true;
 let isModal = true;
 let isPlan = false;
-let interval, tbody, header, taskValue, taskValueModal, resultTHeader, resultTBody, taskInputModal;
+let startTime = null;
+let interval, endTime, tbody, header, taskValue, taskValueModal, resultTHeader, resultTBody, taskInputModal;
 let arrayTasks = [];
 
 function incrementeSeconds () {
-   second += 1
-   eSecond.innerText = second.toString().padStart(2, '0');
+    const now = Date.now();
+    elapsed = now - startTime;
 
-   if (second === 60) { 
-        minute += 1
-        second = 0
-   }
-   eMinute.innerText = minute.toString().padStart(2, '0');
+    const totalSeconds = Math.floor(elapsed / 1000);
+    second = totalSeconds % 60;
+    minute = Math.floor(totalSeconds / 60) % 60;
+    time = Math.floor(totalSeconds / 3600);
 
-   if (minute === 60) {
-        time += 1
-        minute = 0
-   }
-   eTime.innerText = time.toString().padStart(2, '0');
+    eSecond.innerText = second.toString().padStart(2, '0');
+    eMinute.innerText = minute.toString().padStart(2, '0');
+    eTime.innerText = time.toString().padStart(2, '0');
 }
 
 function decrementSeconds () {
-   second -= 1
-   eSecond.innerText = second.toString().padStart(2, '0');
+    const now = Date.now();
+    const remainingMs = endTime - now;
 
-   if (second === 0) { 
-        minute -= 1
-        second = 60
-   }
-   eMinute.innerText = minute.toString().padStart(2, '0');
-
-   if (minute === 0) {
-        time -= 1
-        minute = 60
-   }
-   eTime.innerText = time.toString().padStart(2, '0');
-
-    if (time === 0 && minute === 0 && second === 0) {
-        clearInterval(interval);    
+    if (remainingMs <= 0) {
+        eSecond.innerText = '00';
+        eMinute.innerText = '00';
+        eTime.innerText = '00';
+        clearInterval(interval);
+        return;
     }
+    
+    const totalSeconds = Math.floor(remainingMs / 1000);
+    second = totalSeconds % 60;
+    minute = Math.floor(totalSeconds / 60) % 60;
+    time = Math.floor(totalSeconds / 3600);
+
+    eSecond.innerText = second.toString().padStart(2, '0');
+    eMinute.innerText = minute.toString().padStart(2, '0');
+    eTime.innerText = time.toString().padStart(2, '0');
 }
 
 function validationToggle () {
@@ -64,6 +64,9 @@ function validationToggle () {
 
     if (isPlan) {
         if (isValid) {
+            startTime = Date.now() - elapsed;
+            let totalSeconds = (time * 3600) + (minute * 60);
+            endTime = Date.now() + totalSeconds * 1000;
             interval = setInterval(decrementSeconds, 1000);
             btnStar.innerHTML = 'Pausar';
             isValid = false;
@@ -76,7 +79,8 @@ function validationToggle () {
         }
     }  else {
         if (isValid) {
-            interval = setInterval(incrementeSeconds, 1000);
+            startTime = Date.now() - elapsed;
+            interval = setInterval(incrementeSeconds, 100);
             btnStar.innerHTML = 'Pausar';
             isValid = false;
         } else {
@@ -92,6 +96,8 @@ function clearTimer () {
     time = 0;
     minute = 0;
     second = 0;
+    elapsed = 0;
+    startTime = null;
     eTime.innerHTML = '00';
     eMinute.innerHTML = '00';
     eSecond.innerHTML = '00';
@@ -233,7 +239,7 @@ function plan () {
         const minutes = taskValueModal[3] + taskValueModal[4];
         time = hour;
         minute = minutes;
-        second = 60;
+        second = 59;
 
         eTime.innerHTML = time;
         eMinute.innerHTML  = minute;
