@@ -17,10 +17,11 @@ let minute = 0;
 let second = 0;
 let isValid = true;
 let isModal = true;
-let interval, tbody, header, taskValue, taskValueModal, resultTHeader, resultTBody;
+let isPlan = false;
+let interval, tbody, header, taskValue, taskValueModal, resultTHeader, resultTBody, taskInputModal;
 let arrayTasks = [];
 
-function incrementeSeconds() {
+function incrementeSeconds () {
    second += 1
    eSecond.innerText = second.toString().padStart(2, '0');
 
@@ -37,17 +38,52 @@ function incrementeSeconds() {
    eTime.innerText = time.toString().padStart(2, '0');
 }
 
+function decrementSeconds () {
+   second -= 1
+   eSecond.innerText = second.toString().padStart(2, '0');
+
+   if (second === 0) { 
+        minute -= 1
+        second = 60
+   }
+   eMinute.innerText = minute.toString().padStart(2, '0');
+
+   if (minute === 0) {
+        time -= 1
+        minute = 60
+   }
+   eTime.innerText = time.toString().padStart(2, '0');
+
+    if (time === 0 && minute === 0 && second === 0) {
+        clearInterval(interval);    
+    }
+}
+
 function validationToggle () {
     clearInterval(interval);
 
-    if (isValid) {
-        interval = setInterval(incrementeSeconds, 1000);
-        btnStar.innerHTML = 'Pausar';
-        isValid = false;
-    } else {
-       clearInterval(interval);
-       btnStar.innerHTML = 'Iniciar';
-       isValid = true;
+    if (isPlan) {
+        if (isValid) {
+            interval = setInterval(decrementSeconds, 1000);
+            btnStar.innerHTML = 'Pausar';
+            isValid = false;
+            isPlan = false;
+        } else {
+            clearInterval(interval);
+            btnStar.innerHTML = 'Iniciar';
+            isValid = true;
+            isPlan = false;
+        }
+    }  else {
+        if (isValid) {
+            interval = setInterval(incrementeSeconds, 1000);
+            btnStar.innerHTML = 'Pausar';
+            isValid = false;
+        } else {
+            clearInterval(interval);
+            btnStar.innerHTML = 'Iniciar';
+            isValid = true;
+        }
     }
 }
 
@@ -186,17 +222,32 @@ function modal () {
 
 function plan () {
     taskValueModal = document.getElementById('taskTime').value;
+    taskInputModal = document.getElementById('taskInputModal').value;
 
     if (taskValueModal === '') {
         window.alert("O campo tempo não pode ser vazio!");
     }
 
     try {
-        console.log(taskValueModal) //12:20 hora/minuto
-        taskValueModal
-    } catch (error) {
+        const hour = taskValueModal[0] + taskValueModal[1];
+        const minutes = taskValueModal[3] + taskValueModal[4];
+        time = hour;
+        minute = minutes;
+        second = 60;
 
-    }
+        eTime.innerHTML = time;
+        eMinute.innerHTML  = minute;
+        eSecond.innerHTML  = second;
+        document.getElementById('taskInput').value = taskInputModal;
+
+        isPlan = true;
+
+        containerModal.classList.remove("dFlexModal");
+        isModal = true;
+
+        document.getElementById('taskTime').value = '';
+        document.getElementById('taskInputModal').value = '';
+    } catch (error) {}
 }   
 
 const verifyHeader = (element) => {
