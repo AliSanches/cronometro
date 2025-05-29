@@ -1,16 +1,16 @@
-const btnStart = document.querySelector('#start');
-const btnClear = document.querySelector('#clear');
-const btnSave = document.querySelector('#save');
-const btnClearTable = document.querySelector("#clearTable");
-const btnModal = document.querySelector("#plan");
-const btnCloseModal = document.querySelector("#cancelModal");
-const btnAplic = document.querySelector("#aplicTime");
-const indiceList = document.querySelector("#indice");
-const container = document.querySelector("#container-clear");
+const btnStart =       document.querySelector('#start');
+const btnClear =       document.querySelector('#clear');
+const btnSave =        document.querySelector('#save');
+const btnClearTable =  document.querySelector("#clearTable");
+const btnModal =       document.querySelector("#plan");
+const btnCloseModal =  document.querySelector("#cancelModal");
+const btnAplic =       document.querySelector("#aplicTime");
+const indiceList =     document.querySelector("#indice");
+const container =      document.querySelector("#container-clear");
 const containerModal = document.querySelector("#container-modal");
 
 // Elements DOM
-let eTime = document.querySelector('#time');
+let eTime   = document.querySelector('#time');
 let eMinute = document.querySelector('#minute');
 let eSecond = document.querySelector('#second');
 
@@ -41,8 +41,7 @@ function incrementeSeconds () {
     eTime.innerText = time.toString().padStart(2, '0');
 }
 
-function 
-decrementSeconds () {
+function decrementSeconds () {
     const now = Date.now();
     const remainingMs = endTime - now;
 
@@ -143,69 +142,13 @@ function saveTimer () {
     const newContentTask = document.createTextNode(`${taskValue}`);
     newTask.appendChild(newContentTask);
 
-   if (isPlan) {
-        const newTd = document.createElement("td");
-        const newContentTime = document.createTextNode(`${oldHour.toString().padStart(2, '0')}`);
-        newTd.appendChild(newContentTime);
-
-        const newTd2 = document.createElement("td");
-        const newContentMinute = document.createTextNode(`${oldMinute.toString().padStart(2, '0')}`);
-        newTd2.appendChild(newContentMinute);
-
-        const newTd3 = document.createElement("td");
-        const newContentSecond = document.createTextNode(`${oldSecond.toString().padStart(2, '0')}`);
-        newTd3.appendChild(newContentSecond);
-   } else {
-        const newTd = document.createElement("td");
-        const newContentTime = document.createTextNode(`${time.toString().padStart(2, '0')}`);
-        newTd.appendChild(newContentTime);
-
-        const newTd2 = document.createElement("td");
-        const newContentMinute = document.createTextNode(`${minute.toString().padStart(2, '0')}`);
-        newTd2.appendChild(newContentMinute);
-
-        const newTd3 = document.createElement("td");
-        const newContentSecond = document.createTextNode(`${second.toString().padStart(2, '0')}`);
-        newTd3.appendChild(newContentSecond);
-   }
-
-    indiceList.appendChild(header);
-    newRow.appendChild(newTask);
-    newRow.appendChild(newTd);
-    newRow.appendChild(newTd2);
-    newRow.appendChild(newTd3);
-    tBody.appendChild(newRow);
-
     if (isPlan) {
-        let addTask = {
-            nameTask: taskValue,
-            hours: oldHour,
-            minutes: oldMinute,
-            seconds: oldSecond,
-        } 
-        arrayTasks.push(addTask);
-        console.log(addTask)
-
-        indiceList.appendChild(tBody);
-        localStorage.setItem("task", JSON.stringify(arrayTasks));
-    
-        container.classList.add("displayFlex");
-        clearTimer();
+        verifyPlan(newRow, newTask, oldHour, oldMinute, oldSecond);
+        oldHour = 0;
+        oldMinute = 0;
+        oldSecond = 0;
     } else {
-        console.log("Deu errado!")
-        let addTask = {
-            nameTask: taskValue,
-            hours: time,
-            minutes: minute,
-            seconds: second,
-        }
-        arrayTasks.push(addTask);
-
-        indiceList.appendChild(tBody);
-        localStorage.setItem("task", JSON.stringify(arrayTasks));
-    
-        container.classList.add("displayFlex");
-        clearTimer();
+        verifyPlan(newRow, newTask, time, minute, second);
     }
 }
 
@@ -344,6 +287,41 @@ const verifyBody = (element) => {
     } else {
         return tBody = resultTBody[0];
     }
+}
+
+const verifyPlan = (row, task, hour, minute, second) => {
+    const newTd = document.createElement("td");
+    const newContentTime = document.createTextNode(`${hour.toString().padStart(2, '0')}`);
+    newTd.appendChild(newContentTime);
+
+    const newTd2 = document.createElement("td");
+    const newContentMinute = document.createTextNode(`${minute.toString().padStart(2, '0')}`);
+    newTd2.appendChild(newContentMinute);
+
+    const newTd3 = document.createElement("td");
+    const newContentSecond = document.createTextNode(`${second.toString().padStart(2, '0')}`);
+    newTd3.appendChild(newContentSecond);
+
+    indiceList.appendChild(header);
+    row.appendChild(task);
+    row.appendChild(newTd);
+    row.appendChild(newTd2);
+    row.appendChild(newTd3);
+    tBody.appendChild(row);
+
+    let addTask = {
+        nameTask: taskValue,
+        hours: hour,
+        minutes: minute,
+        seconds: second,
+    } 
+    arrayTasks.push(addTask);
+
+    indiceList.appendChild(tBody);
+    localStorage.setItem("task", JSON.stringify(arrayTasks));
+
+    container.classList.add("displayFlex");
+    clearTimer();   
 }
 
 btnStart.addEventListener('click', validationToggle);
