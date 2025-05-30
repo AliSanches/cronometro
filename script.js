@@ -38,7 +38,7 @@ function incrementeSeconds () {
 
     eSecond.innerText = second.toString().padStart(2, '0');
     eMinute.innerText = minute.toString().padStart(2, '0');
-    eTime.innerText = time.toString().padStart(2, '0');
+    eTime.innerText   = time.toString().padStart(2, '0');
 }
 
 function decrementSeconds () {
@@ -51,15 +51,14 @@ function decrementSeconds () {
         eTime.innerText = '00';
         clearInterval(interval);
         isPlan = true;
-        saveTimer();
-        isPlan = false;
+        saveTimer(isPlan);
         return;
     }
     
     const totalSeconds = Math.floor(remainingMs / 1000);
     second = totalSeconds % 60;
     minute = Math.floor(totalSeconds / 60) % 60;
-    time = Math.floor(totalSeconds / 3600);
+    time   = Math.floor(totalSeconds / 3600);
 
     eSecond.innerText = second.toString().padStart(2, '0');
     eMinute.innerText = minute.toString().padStart(2, '0');
@@ -82,7 +81,6 @@ function validationToggle () {
             clearInterval(interval);
             btnStart.innerHTML = 'Iniciar';
             isValid = true;
-            isPlan = false;
         }
     }  else {
         if (isValid) {
@@ -125,7 +123,7 @@ function clearTable () {
     container.classList.remove("displayFlex");
 }
 
-function saveTimer () {
+function saveTimer (p) {
     // Header
     resultTHeader = indiceList.getElementsByTagName("thead");
     verifyHeader(resultTHeader);
@@ -142,11 +140,14 @@ function saveTimer () {
     const newContentTask = document.createTextNode(`${taskValue}`);
     newTask.appendChild(newContentTask);
 
-    if (isPlan) {
+
+    if (p) {
         verifyPlan(newRow, newTask, oldHour, oldMinute, oldSecond);
         oldHour = 0;
         oldMinute = 0;
         oldSecond = 0;
+
+        isPlan = false;
     } else {
         verifyPlan(newRow, newTask, time, minute, second);
     }
@@ -227,11 +228,11 @@ function createPlan () {
         const minutes = taskValueModal[3] + taskValueModal[4];
         time = hour;
         minute = minutes;
-        second = 59;
+        second = second.toString().padStart(2, "00");
 
         oldHour = hour;
         oldMinute = minutes;
-        oldSecond = 59;
+        second = second.toString().padStart(2, "00");
 
         eTime.innerHTML = time;
         eMinute.innerHTML  = minute;
@@ -326,7 +327,7 @@ const verifyPlan = (row, task, hour, minute, second) => {
 
 btnStart.addEventListener('click', validationToggle);
 btnClear.addEventListener('click', clearTimer);
-btnSave.addEventListener('click', saveTimer);
+btnSave.addEventListener('click', () => saveTimer(isPlan));
 btnClearTable.addEventListener('click', clearTable);
 btnModal.addEventListener('click', openModal);
 btnCloseModal.addEventListener('click', openModal);
