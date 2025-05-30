@@ -331,3 +331,4 @@ btnClearTable.addEventListener('click', clearTable);
 btnModal.addEventListener('click', openModal);
 btnCloseModal.addEventListener('click', openModal);
 btnAplic.addEventListener('click', createPlan);
+window.addEventListener("DOMContentLoaded", verifyLocalStorage);
