@@ -1,0 +1,157 @@
+body {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
+    align-items: center;
+    font-family: "JetBrains Mono", monospace;
+    font-optical-sizing: auto;
+}
+
+.container-main {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: #47d9d4;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    box-shadow: 10px 5px 5px #2f8683;
+}
+
+.organization {
+    display: flex;
+    gap: 4px;
+    font-weight: 700;
+}
+
+.buttons {
+    display: flex;
+    gap: 5px;
+}
+
+.buttonsModal {
+    display: flex;
+    justify-content: right;
+    gap: 5px;
+}
+
+.btn {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    background: #020024;
+    transition: 0.3s ease;
+    color: white;
+}
+
+@media (hover: hover) {
+    .btn:hover {
+        background: #868686;
+    }
+}
+
+.btn:active {
+    background: #868686;
+}
+
+.scroll {
+    margin-top: 30px;
+    height: 200px;
+    overflow-y: auto;
+    display: none;
+}
+
+.mostrar {
+    display: block;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+th,
+td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.container-task {
+    margin-top: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.container-task label {
+    font-size: 16px;
+    font-weight: 700;
+}
+
+input[type=text] {
+    width: 80%;
+    padding: 12px 20px;
+    border-radius: 4px;
+    -webkit-transition: 0.5s;
+    transition: 0.5s;
+    outline: none;
+    border: 3px solid #ccc;
+}
+
+input[type=text]:focus {
+    border: 3px solid #868686;
+}
+
+input[type=time] {
+    width: 80%;
+    padding: 12px 20px;
+    border-radius: 4px;
+    -webkit-transition: 0.5s;
+    transition: 0.5s;
+    outline: none;
+    border: 3px solid #ccc;
+}
+
+.displayNone {
+    display: none;
+    margin-top: 10px;
+}
+
+.displayFlex {
+    display: flex;
+    justify-content: left;
+}
+
+.container-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.6);
+}
+
+.container-modal.dFlexModal {
+    display: flex;
+}
+
+.modal {
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    gap: 10px;
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    height: auto;
+    width: 320px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+}

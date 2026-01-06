@@ -1,197 +1,71 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
- 
+
     <!-- Font JetBrains Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap"
+        rel="stylesheet">
 
     <!-- Icon -->
     <link rel="icon" type="image/x-icon" href="/time.png">
 
     <title>Cronômetro</title>
 
+    <link rel="stylesheet" href="style.css">
     <script src="script.js" defer></script>
 </head>
+
 <body>
-    <style type="text/css">
-        body {
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            width: 100vw;
-            height: 100vh;
-            align-items: center;
-            font-family: "JetBrains Mono", monospace;
-            font-optical-sizing: auto;
-        }    
+    <div class="container-main" id="container-main">
+        <div>
+            <h1>CRONÔMETRO</h1>
+        </div>
 
-        .organization {
-          display: flex;
-          gap: 4px;
-          font-weight: 700;
-        }
+        <div class="organization">
+            <p id="time">00</p>
+            <p>:</p>
+            <p id="minute">00</p>
+            <p>:</p>
+            <p id="second">00</p>
+        </div>
 
-        .buttons {
-            display: flex;
-            gap: 5px;
-        }
+        <div class="buttons">
+            <button id="start" class="btn">Iniciar</button>
+            <button id="clear" class="btn">Reiniciar</button>
+            <button id="save" class="btn">Salvar</button>
+            <!-- <button id="plan" class="btn">Agendar</button> -->
+        </div>
 
-        .buttonsModal {
-            display: flex;
-            justify-content: right;
-            gap: 5px;
-        }
+        <div class="container-modal" id="container-modal">
+            <div class="modal">
+                <label for="taskInputModal">Tarefa</label>
+                <input type="text" id="taskInputModal" name="taskModal">
+                <input type="time" id="taskTime">
 
-        .btn {
-            padding: 5px 10px;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            background: #020024;
-            transition: 0.3s ease;
-            color: white;
-        }
+                <div class="buttonsModal">
+                    <button class="btn" id="cancelModal">Cancelar</button>
+                    <button class="btn" id="aplicTime">Aplicar</button>
+                </div>
+            </div>
+        </div>
 
-        @media (hover: hover) {
-            .btn:hover {
-                background: #868686;
-            }
-        }
-        
-        .btn:active {
-            background: #868686;
-        }
+        <div class="container-task">
+            <label for="taskInput">Tarefa</label>
+            <input type="text" name="task" id="taskInput">
+        </div>
 
-        .scroll {
-            margin-top: 30px;
-            height: 200px;
-            overflow-y: auto;
-        }
-
-        table {
-            border-collapse: collapse;
-        }
-
-        th, td {
-            padding: 8px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-
-        .container-task {
-            margin-top: 12px;
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-        }
-
-        .container-task label {
-            font-size: 16px;
-            font-weight: 700;
-        }
-
-        input[type=text] {
-            width: 80%;
-            padding: 12px 20px;
-            border-radius: 4px;
-            -webkit-transition: 0.5s;
-            transition: 0.5s;
-            outline: none;
-            border: 3px solid #ccc;
-        }
-
-        input[type=text]:focus {
-            border: 3px solid #868686;
-        }
-
-        input[type=time] {
-            width: 80%;
-            padding: 12px 20px;
-            border-radius: 4px;
-            -webkit-transition: 0.5s;
-            transition: 0.5s;
-            outline: none;
-            border: 3px solid #ccc;
-        }
-
-        .displayNone {
-            display: none;
-            margin-top: 10px;
-        }
-
-        .displayFlex {
-            display: flex;
-            justify-content: left;
-        }
-
-        .container-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 999;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(0, 0, 0, 0.6);
-        }
-
-        .container-modal.dFlexModal {
-            display: flex;
-        }
-
-        .modal {
-            display: flex;
-            flex-direction: column;
-            justify-content: left;
-            gap: 10px;
-            background: white;
-            padding: 2rem;
-            border-radius: 8px;
-            height: auto;
-            width: 320px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.3);
-        }
-    </style>
-     
-    <div><h1>CRONÔMETRO</h1></div>
-     
-    <div class="organization"><p id="time">00</p><p>:</p><p id="minute">00</p><p>:</p><p id="second">00</p></div>
-
-    <div class="buttons">
-        <button id="start" class="btn">Iniciar</button>
-        <button id="clear" class="btn">Reiniciar</button>
-        <button id="save" class="btn">Salvar</button>
-        <!-- <button id="plan" class="btn">Agendar</button> -->
-    </div>
-
-    <div class="container-modal" id="container-modal">
-        <div class="modal">
-            <label for="taskInputModal">Tarefa</label>
-            <input type="text" id="taskInputModal" name="taskModal">
-            <input type="time" id="taskTime">
-
-            <div class="buttonsModal">
-                <button class="btn" id="cancelModal">Cancelar</button>
-                <button class="btn" id="aplicTime">Aplicar</button>
+        <div class="scroll" id="scroll">
+            <table id="indice"></table>
+            <div class="displayNone" id="container-clear">
+                <button id="clearTable" class="btn">Limpar Tarefas</button>
             </div>
         </div>
     </div>
-
-    <div class="container-task">
-        <label for="taskInput">Tarefa</label>
-        <input type="text" name="task" id="taskInput">
-    </div>
-
-    <div class="scroll">
-        <table id="indice"></table>
-        <div class="displayNone" id="container-clear"><button id="clearTable" class="btn">Limpar Tarefas</button></div>
-    </div>
 </body>
+
 </html>

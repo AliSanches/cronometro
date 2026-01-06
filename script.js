@@ -1,16 +1,18 @@
-const btnStart =       document.querySelector('#start');
-const btnClear =       document.querySelector('#clear');
-const btnSave =        document.querySelector('#save');
-const btnClearTable =  document.querySelector("#clearTable");
-const btnModal =       document.querySelector("#plan");
-const btnCloseModal =  document.querySelector("#cancelModal");
-const btnAplic =       document.querySelector("#aplicTime");
-const indiceList =     document.querySelector("#indice");
-const container =      document.querySelector("#container-clear");
+const btnStart = document.querySelector('#start');
+const btnClear = document.querySelector('#clear');
+const btnSave = document.querySelector('#save');
+const btnClearTable = document.querySelector("#clearTable");
+const btnModal = document.querySelector("#plan");
+const btnCloseModal = document.querySelector("#cancelModal");
+const btnAplic = document.querySelector("#aplicTime");
+const indiceList = document.querySelector("#indice");
+const container = document.querySelector("#container-clear");
 const containerModal = document.querySelector("#container-modal");
+const hightMain = document.querySelector("#container-main");
+const scrollBox = document.querySelector("#scroll");
 
 // Elements DOM
-let eTime   = document.querySelector('#time');
+let eTime = document.querySelector('#time');
 let eMinute = document.querySelector('#minute');
 let eSecond = document.querySelector('#second');
 
@@ -27,7 +29,7 @@ let interval, endTime, tbody, header, taskValue, taskValueModal, resultTHeader, 
 let oldHour, oldMinute, oldSecond;
 let arrayTasks = [];
 
-function incrementeSeconds () {
+function incrementeSeconds() {
     const now = Date.now();
     elapsed = now - startTime;
 
@@ -38,10 +40,10 @@ function incrementeSeconds () {
 
     eSecond.innerText = second.toString().padStart(2, '0');
     eMinute.innerText = minute.toString().padStart(2, '0');
-    eTime.innerText   = time.toString().padStart(2, '0');
+    eTime.innerText = time.toString().padStart(2, '0');
 }
 
-function decrementSeconds () {
+function decrementSeconds() {
     const now = Date.now();
     const remainingMs = endTime - now;
 
@@ -54,18 +56,18 @@ function decrementSeconds () {
         saveTimer(isPlan);
         return;
     }
-    
+
     const totalSeconds = Math.floor(remainingMs / 1000);
     second = totalSeconds % 60;
     minute = Math.floor(totalSeconds / 60) % 60;
-    time   = Math.floor(totalSeconds / 3600);
+    time = Math.floor(totalSeconds / 3600);
 
     eSecond.innerText = second.toString().padStart(2, '0');
     eMinute.innerText = minute.toString().padStart(2, '0');
     eTime.innerText = time.toString().padStart(2, '0');
 }
 
-function validationToggle () {
+function validationToggle() {
     clearInterval(interval);
 
     if (isPlan) {
@@ -82,7 +84,7 @@ function validationToggle () {
             btnStart.innerHTML = 'Iniciar';
             isValid = true;
         }
-    }  else {
+    } else {
         if (isValid) {
             startTime = Date.now() - elapsed;
             interval = setInterval(incrementeSeconds, 100);
@@ -96,7 +98,7 @@ function validationToggle () {
     }
 }
 
-function clearTimer () {
+function clearTimer() {
     clearInterval(interval);
     time = 0;
     minute = 0;
@@ -111,7 +113,7 @@ function clearTimer () {
     isValid = true;
 }
 
-function clearTable () {
+function clearTable() {
     localStorage.clear();
     arrayTasks = [];
     if (resultTHeader.length === 1) {
@@ -121,9 +123,12 @@ function clearTable () {
         tBody.remove();
     }
     container.classList.remove("displayFlex");
+    scrollBox.classList.remove('mostrar')
 }
 
-function saveTimer (p) {
+function saveTimer(p) {
+    scrollBox.classList.add('mostrar');
+
     // Header
     resultTHeader = indiceList.getElementsByTagName("thead");
     verifyHeader(resultTHeader);
@@ -140,7 +145,6 @@ function saveTimer (p) {
     const newContentTask = document.createTextNode(`${taskValue}`);
     newTask.appendChild(newContentTask);
 
-
     if (p) {
         verifyPlan(newRow, newTask, oldHour, oldMinute, oldSecond);
         oldHour = 0;
@@ -153,7 +157,7 @@ function saveTimer (p) {
     }
 }
 
-function verifyLocalStorage () {
+function verifyLocalStorage() {
     try {
         let localStorageTask = JSON.parse(localStorage.getItem("task"));
 
@@ -196,10 +200,10 @@ function verifyLocalStorage () {
         if (localStorageTask.length) {
             container.classList.add("displayFlex");
         }
-    } catch (error) {}
+    } catch (error) { }
 }
 
-function openModal () {
+function openModal() {
     if (isModal) {
         containerModal.classList.add("dFlexModal");
         isModal = false;
@@ -209,7 +213,7 @@ function openModal () {
     }
 }
 
-function createPlan () {
+function createPlan() {
     taskValueModal = document.getElementById('taskTime').value;
     taskInputModal = document.getElementById('taskInputModal').value;
 
@@ -235,8 +239,8 @@ function createPlan () {
         second = second.toString().padStart(2, "00");
 
         eTime.innerHTML = time;
-        eMinute.innerHTML  = minute;
-        eSecond.innerHTML  = second;
+        eMinute.innerHTML = minute;
+        eSecond.innerHTML = second;
         document.getElementById('taskInput').value = taskInputModal;
 
         isPlan = true;
@@ -246,8 +250,8 @@ function createPlan () {
 
         document.getElementById('taskTime').value = '';
         document.getElementById('taskInputModal').value = '';
-    } catch (error) {}
-}   
+    } catch (error) { }
+}
 
 const verifyHeader = (element) => {
     if (element.length === 0) {
@@ -259,7 +263,7 @@ const verifyHeader = (element) => {
         const columnTask = document.createElement("th");
         const contentTask = document.createTextNode("Tarefa");
         columnTask.appendChild(contentTask);
-        
+
         const columnTime = document.createElement("th");
         const contentTime = document.createTextNode("Hora");
         columnTime.appendChild(contentTime);
@@ -277,7 +281,7 @@ const verifyHeader = (element) => {
         header.appendChild(columnMinute);
         header.appendChild(columnSecond);
     } else {
-        return tHeader = resultTHeader[0]; 
+        return tHeader = resultTHeader[0];
     }
 
 }
@@ -315,14 +319,14 @@ const verifyPlan = (row, task, hour, minute, second) => {
         hours: hour,
         minutes: minute,
         seconds: second,
-    } 
+    }
     arrayTasks.push(addTask);
 
     indiceList.appendChild(tBody);
     localStorage.setItem("task", JSON.stringify(arrayTasks));
 
     container.classList.add("displayFlex");
-    clearTimer();   
+    clearTimer();
 }
 
 btnStart.addEventListener('click', validationToggle);
